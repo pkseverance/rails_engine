@@ -29,9 +29,9 @@ RSpec.describe 'Merchants Endpoint' do
 
     describe 'Merchant Show' do
         it 'returns a merchant by id' do
-            id = create(:merchant).id
+            merchant = create(:merchant)
 
-            get "/api/v1/merchants/#{id}"
+            get "/api/v1/merchants/#{merchant.id}"
 
             expect(response).to(be_successful)
 
