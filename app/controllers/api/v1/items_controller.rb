@@ -4,6 +4,11 @@ class Api::V1::ItemsController < ApplicationController
     end
 
     def show
-        render json: ItemSerializer.new(Item.find(params[:id]))
+        if Item.where(id: params[:id]).exists?
+            render json: ItemSerializer.new(Item.find(params[:id]))
+        else
+            render json: ItemSerializer.not_found,
+            status: 404
+        end
     end
 end
