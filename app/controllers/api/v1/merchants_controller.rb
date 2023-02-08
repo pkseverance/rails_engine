@@ -4,6 +4,11 @@ class Api::V1::MerchantsController < ApplicationController
     end
 
     def show
-        render json: MerchantSerializer.new(Merchant.find(params[:id]))
+        if Merchant.where(id: params[:id]).exists? 
+            render json: MerchantSerializer.new(Merchant.find(params[:id]))
+        else
+            render json: MerchantSerializer.not_found,
+            status: 404
+        end
     end
 end
