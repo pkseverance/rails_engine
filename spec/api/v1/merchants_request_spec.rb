@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Merchants API' do
+RSpec.describe 'Merchants Endpoint' do
     describe 'Merchants Index' do
 
         it 'returns a list of merchants' do
