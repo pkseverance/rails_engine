@@ -7,7 +7,6 @@ RSpec.describe 'Merchants Endpoint' do
             create_list(:merchant, 10)
 
             get '/api/v1/merchants'
-
             expect(response).to(be_successful)
 
             merchants = JSON.parse(response.body, symbolize_names: true)
@@ -16,7 +15,7 @@ RSpec.describe 'Merchants Endpoint' do
 
             merchants[:data].each do |merchant|
                 expect(merchant).to have_key(:id)
-                expect(merchant[:id].to_i).to be_an(Integer)
+                expect(merchant[:id]).to be_a(String)
 
                 expect(merchant).to have_key(:type)
                 expect(merchant[:type]).to eq('merchant')
@@ -43,7 +42,7 @@ RSpec.describe 'Merchants Endpoint' do
             merchant_data = merchant[:data]
 
             expect(merchant_data).to have_key(:id)
-            expect(merchant_data[:id].to_i).to be_an(Integer)
+            expect(merchant_data[:id]).to be_a(String)
             expect(merchant_data).to have_key(:type)
             expect(merchant_data).to have_key(:attributes)
             expect(merchant_data[:attributes]).to have_key(:name)
@@ -62,10 +61,11 @@ RSpec.describe 'Merchants Endpoint' do
             merchant_items = JSON.parse(response.body, symbolize_names: true)
 
             expect(response).to(be_successful)
+            expect(merchant_items[:data].count).to eq(10)
             
             merchant_items[:data].each do |item|
                 expect(item).to have_key(:id)
-                expect(item[:id].to_i).to be_an(Integer)
+                expect(item[:id]).to be_a(String)
 
                 expect(item).to have_key(:type)
                 expect(item[:type]).to eq('item')
