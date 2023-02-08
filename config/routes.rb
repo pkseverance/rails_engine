@@ -5,15 +5,11 @@ Rails.application.routes.draw do
     namespace :v1 do
 
       resources :items, only: [:index, :show] do
-        member do
-          get 'merchant'
-        end
+          resource :merchant, only: [:show]
       end
 
       resources :merchants, only: [:index, :show] do
-        member do
-          get 'items'
-        end
+        resources :items, only: [:index]
       end
     end
   end
