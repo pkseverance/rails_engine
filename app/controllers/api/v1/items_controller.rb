@@ -21,21 +21,27 @@ class Api::V1::ItemsController < ApplicationController
         end
     end
 
+    def update
+        item = Item.find(params[:id])
+        if item.update(item_params)
+            render json: ItemSerializer.new(item)
+        else
+            render status: 400
+        end
+    end
+
     def destroy
-        @item = Item.find(params[:id])
-        destroy_invoice_items
-        @item.destroy
+        begin
+            Item.find(params[:id]).destroy
+        rescue StandardError => error
+            render json: error,
+            status: 404
+        end
     end
 
     private
     
     def item_params
         params.require(:item).permit(:name, :description, :unit_price, :merchant_id)
-    end
-
-    def destroy_invoice_items
-        @item.invoice_items.each do |invoice_item|
-            invoice_item.destroy if invoice_item.item == @item
-        end
     end
 end
