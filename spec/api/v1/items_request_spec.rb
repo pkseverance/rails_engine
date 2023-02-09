@@ -107,4 +107,23 @@ RSpec.describe 'Items Endpoint' do
             expect{Item.find(item.id)}.to raise_error(ActiveRecord::RecordNotFound)
         end
     end
+
+    describe 'Update Item' do
+        it 'makes a patch request' do
+            merchant = create(:merchant)
+            item = create(:item, merchant: merchant)
+
+            headers = {"CONTENT_TYPE" => "application/json"}
+            item_params = ({name: 'abcd', description: 'dkgjsjdfsklgjfsklg', unit_price: item.unit_price, merchant_id: merchant.id})
+
+            previous_name = Item.last.name
+
+            patch "/api/v1/items/#{item.id}", headers: headers, params: JSON.generate(item: item_params)
+            updated_item = Item.find_by(id: item.id)
+
+            expect(response).to(be_successful)
+            expect(updated_item.name).to_not eq(previous_name)
+            expect(updated_item.name).to eq('abcd')
+        end
+    end
 end
