@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :items do
+        scope module: :items do
           resource :merchant, only: [:show]
+        end
       end
 
       resources :merchants, only: [:index, :show] do
