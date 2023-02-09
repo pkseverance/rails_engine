@@ -126,4 +126,26 @@ RSpec.describe 'Items Endpoint' do
             expect(updated_item.name).to eq('abcd')
         end
     end
+
+    describe "Item's Merchant Show" do
+        it "Get's an item's merchant" do
+            merchant = create(:merchant)
+            item = create(:item, merchant: merchant)
+
+            get "/api/v1/items/#{item.id}/merchant"
+            expect(response).to(be_successful)
+
+            merchant_response = JSON.parse(response.body, symbolize_names: true)
+
+            expect(merchant_response[:data]).to have_key(:id)
+            expect(merchant_response[:data][:id]).to be_a(String)
+
+            expect(merchant_response[:data]).to have_key(:type)
+            expect(merchant_response[:data][:type]).to eq('merchant')
+            
+            expect(merchant_response[:data]).to have_key(:attributes)
+            expect(merchant_response[:data][:attributes]).to have_key(:name)
+            expect(merchant_response[:data][:attributes][:name]).to eq(merchant.name)
+        end
+    end
 end
